@@ -1,0 +1,88 @@
+﻿<h2><a href="#/"><i class="icon icon-backward"></i>Back</a></h2>
+<br />
+<div class="messages">
+    <div class="message row">
+        <div class="title span10">
+            {{ topic.title }}
+        </div>
+
+        <div class="date span2">
+            {{ topic.created | date:"medium" }}
+        </div>
+        <div class="contents span12">
+            {{ topic.body }}
+        </div>
+
+        <div class="replies span12">
+            <div class="reply" data-ng-repeat="r in topic.tags">
+                <div class="created pull-right">
+                    {{ r.created | date:"medium" }}
+                </div>
+                <div class="content">
+                    {{ r.tagDescription }}
+                    <div class="content">
+                        <a data-ng-show="canEdit"><i class="btn btn-danger fa icon-remove" data-ng-click="deleteTag(r.id,r.topicId)"></i> <strong> Delete Keyword</strong></a>
+                        <!--<i data-ng-show="canEdit" class="btn btn-danger fa icon-minus" data-ng-click="deleteTag(r.id,r.topicId)"><strong> Delete Keyword</strong></i>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="content">
+        <!--<i data-ng-show="canEdit" class="btn btn-danger fa icon-minus" data-ng-click="deleteTopic(topic.id)"> <strong>Delete</strong></i>-->
+        <a data-ng-show="canEdit"><i class="btn btn-danger fa icon-remove" data-ng-click="deleteTopic(topic.id)"></i> <strong> Delete Article</strong></a>
+        <a data-ng-show="canEdit" data-ng-href="#/editTopic/{{topic.id}}"><i class="btn btn-primary fa icon-wrench" data-ng-click="updateTopic(topic.id)"></i> <strong> Update Article</strong></a>
+        <a data-ng-href="#/fileUploadTopic/{{topic.id}}"> <i class="btn btn-primary fa icon-upload-alt"></i> <strong> Upload File</strong></a>
+        <!-- <a data-ng-href="#/fileDownloadTopic/{{topic.id}}"> <i class="btn btn-primary fa icon-download-alt"></i> <strong> Download File</strong></a>-->
+    </div>
+    <br />
+    <h3>Add Keyword</h3>
+    <form name="newTagForm" novalidate data-ng-submit="addTag()">
+        <fieldset>
+            <div>
+                <input type="text" name="body" data-ng-model="newTag.tagDescription" required />
+                <span class="alert-error" data-ng-show="newTagForm.body.$error.required">Required!</span>
+                <!--<span class="alert-error" data-ng-show="newTagForm.body.$error.minlength">Minimum 5 Characters</span>-->
+            </div>
+            <div>
+                <input type="submit" class="btn" value="Add Keyword" data-ng-disabled="newTagForm.$invalid" />
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<div ng-controller="fileDownloadTopicController">
+
+    <h1>Download Files</h1>
+
+    <dir-pagination-controls></dir-pagination-controls>
+    <div class="col-md-12" style="padding-top:10px;">
+
+        <div class="col-md-7">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>File Type</th>
+                        <th>File Size</th>
+                        <th>Links</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--<tr data-ng-repeat="r in files">-->
+                    <tr dir-paginate="r in files | itemsPerPage:5">
+                        <td>{{r.fileName}}</td>
+                        <td>{{r.fileType}}</td>
+                        <td>{{r.fileSize}}</td>
+                        <td>
+                            <a href="FileDownload/DownloadFiles/?id={{r.id}}" download target="_blank" value="{{r.id}}"><i class="btn btn-primary fa icon-download-alt"></i> <strong> Click here to download</strong></a>
+                        </td>
+                        <td><a data-ng-show="canEdit" href="FileDownload/DeleteFile/?id={{r.id}}" delete value="{{r.id}}"><i class="btn btn-danger fa icon-remove-sign"></i> <strong> Click here to delete</strong></a></td>
+                        <!--<td><a href="api/v1/FilesPurge/Delete/?id={{r.id}}" method="delete" value="{{r.id}}"><i class="btn btn-danger fa icon-remove-sign"></i> <strong> Click here to delete</strong></a></td>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

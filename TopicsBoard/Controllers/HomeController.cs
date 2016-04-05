@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Web.DynamicData;
 using System.Web.Mvc;
+using TopicsBoard.Data;
 using TopicsBoard.Models;
 using TopicsBoard.Services;
 
@@ -11,18 +12,59 @@ namespace TopicsBoard.Controllers
     public class HomeController : Controller
     {
         private IMailService _mail;
+        private ITopicsBoardRepository _repo;
 
-        public HomeController(IMailService mail)
+        public HomeController(IMailService mail, ITopicsBoardRepository repo)
         {
             _mail = mail;
+            _repo = repo;
         }
-        public ActionResult Index()
+
+        //TODO:- Need to think on that web.security initialize message
+    /*     [Authorize]*/
+        public ActionResult Index(string message)
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            ViewBag.Message = message;
 
-            return View();
+         var topics = _repo.GetTopicsIncludingTags().
+                 OrderByDescending(t => t.Created)
+                 .Where(t => t.IsActive)
+                 .ToList();
+
+            var tags = _repo.GetTags().
+                OrderByDescending(t => t.Created)
+                .Where(t => t.IsActive)
+                .ToList();
+
+            //Inner Join
+           /* var innerJoin = from t in topics
+                            join ta in tags
+                                on t.Id equals ta.TopicId
+                            where ta.IsActive && t.IsActive
+                            select t;*/
+
+            //Left outer join
+            var outerjoin = from t in topics
+                            join ta in tags
+                                on t.Id equals ta.TopicId into gj
+                            from ta in gj.DefaultIfEmpty()
+                       //     where tb.IsActive
+                    select t;
+
+            /*var outerjoin = from ta in tags
+                            join t in topics
+                                on ta.TopicId equals t.Id into gj
+                            from t in gj.DefaultIfEmpty()
+                            //                 where tb.IsActive
+                            select t;*/
+
+            var distinctItems = outerjoin.Distinct();
+
+            //var result = innerJoin.GroupBy(x => x.Id).Select(y => y.FirstOrDefault());
+          return View(distinctItems);
         }
 
+    
         public ActionResult About()
         {
             ViewBag.Message = "Your app description page.";

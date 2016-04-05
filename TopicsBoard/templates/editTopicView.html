@@ -1,0 +1,26 @@
+﻿<h3>Edit Article</h3>
+<form name="editTopicForm" novalidate data-ng-submit="save()">
+    <fieldset>
+        <div style="display: none">
+            <input name="title" type="text" value="{{ topic.id }}" data-ng-model="topic.id" />
+        </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input name="title" id="title" type="text" value="{{ topic.title }}" data-ng-model="topic.title" required data-ng-minlength="5" />
+            <span class="alert alert-error" data-ng-show="editTopicForm.title.$error.required">Required</span>
+            <span class="alert alert-info" data-ng-show="editTopicForm.title.$error.minlength">Minimum 5 Characters</span>
+        </div>
+        <div>
+            <label for="body">Body</label>
+            <textarea name="body" value="{{topic.body}}" rows="5" cols="30" data-ng-model="topic.body" />
+        </div>
+        <div style="display: none">
+            <input name="title" type="text" value="{{ topic.created }}" da data-ng-model="topic.created" />
+        </div>
+        <div>
+            <input type="submit" class="btn btn-success" value="Save" data-ng-disabled="editTopicForm.$invalid" />
+            <a href="#/" class="btn">Cancel</a>
+
+        </div>
+    </fieldset>
+</form>

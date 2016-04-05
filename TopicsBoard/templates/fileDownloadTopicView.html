@@ -1,0 +1,34 @@
+﻿<div>
+
+    <h1>Download Files</h1>
+
+    <h2><a href="#/"><i class="icon icon-backward"></i>Back</a></h2>
+    <div class="col-md-12" style="padding-top:10px;">
+
+        <div class="col-md-7">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>File Type</th>
+                        <th>File Size</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="r in files">
+                        <td>{{r.fileName}}</td>
+                        <td>{{r.fileType}}</td>
+                        <td>{{r.fileSize}}</td>
+                        <td>
+
+                            <a href="FileDownload/DownloadFiles/?id={{r.id}}" download target="_blank" value="{{r.id}}"><i class="btn btn-primary fa icon-download-alt"></i> <strong> Click here to download</strong></a>
+
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

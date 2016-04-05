@@ -1,0 +1,56 @@
+﻿<div>
+    <div class="message-header">
+        <h1>One Stop Hub For Open Discussions!</h1>
+        <div id="custom-search-input">
+            <div class="input-group col-md-12">
+                <input type="text" data-ng-model="query" class=" search-query form-control" placeholder="Search" />
+                <span class="input-group-btn">
+                    <button class="btn btn-danger" type="button">
+                        <span class="fa icon-search"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <!--<p class="lead">Latest Topics...</p>-->
+        <br/>
+        <div>Article Count: {{ data.topics.length }}</div>
+    </div>
+
+    <div>
+        <h3> <a data-ng-show="canEdit" href="#/newTopic"><i class="btn btn-success fa icon-plus"></i> <strong> New Article</strong> </a></h3>
+    </div>
+    <div class="progress progress-striped active" data-ng-show="isBusy">
+        <div class="bar" style="width: 100%;"></div>
+    </div>
+
+    <div class="messages">
+        <!--<div class="message row" data-ng-repeat="i in data.topics | filter: query">-->
+        <dir-pagination-controls></dir-pagination-controls>
+        <div class="message row" dir-paginate="i in data.topics | filter: query | itemsPerPage:25">
+            <div class="title span10">
+                <a data-ng-href="#/topic/{{ i.id }}">{{ i.title }}</a>
+            </div>
+            <div class="date span2">
+                {{ i.created | date:"medium" }}
+            </div>
+           <!-- <div class="contents span12">
+                {{ i.body }}
+            </div>-->
+            <!--<div class="span12 toolbar">
+                <button class="btn"><a data-ng-href="#/topic/{{ i.id }}"><strong>Create New Tag</strong> </a></button>
+            </div>-->
+            <div class="replies span12">
+                <div class="reply">
+                    <!--<div class="created pull-right">
+                        {{ r.created | date:"medium" }}
+                    </div>-->
+                    <span class="content" data-ng-repeat="r in i.tags">
+                        <strong> {{r.tagDescription}}{{$last ? '' : ', '}}</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <dir-pagination-controls></dir-pagination-controls>
+</div>
+

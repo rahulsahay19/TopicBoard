@@ -1,0 +1,36 @@
+﻿
+<h3>New Article</h3>
+<div id="loader1" style="display: none;padding-left: 400px">
+    <i class="fa fa-cog fa-fw fa-spin fa-2x"> </i> <strong><em>Creating New Article</em></strong>
+</div>
+<form name="newTopicForm" novalidate data-ng-submit="save()">
+    <fieldset>
+        <div>
+            <label for="title">Title</label>
+            <input name="title" type="text" data-ng-model="newTopic.title" required data-ng-minlength="5" />
+            <span class="alert-error" data-ng-show="newTopicForm.title.$error.required">Required</span>
+            <span class="alert-info" data-ng-show="newTopicForm.title.$error.minlength">Minimum 5 Characters</span>
+        </div>
+        <div>
+            <label for="body">Body</label>
+            <textarea style="width:100%" name="body" rows="20" cols="70" data-ng-model="newTopic.body" />
+        </div>
+        <div>
+            <label for="tag">Keyword</label>
+            <input type="text" id="tag" name="tag" data-ng-model="newTag.tagDescription" />
+        </div>
+
+        <h3>Keywords Collection</h3>
+        <div id="tagsCollection">
+
+        </div>
+        <div>
+            <input type="button" class="btn" value="Add Keyword" ng-click="addTag(newTag.tagDescription)" />
+        </div>
+        <br />
+        <div>
+            <input type="submit" class="btn btn-success" value="Save" data-ng-disabled="newTopicForm.$invalid" />
+            <a href="#/" class="btn">Cancel</a>
+        </div>
+    </fieldset>
+</form>
